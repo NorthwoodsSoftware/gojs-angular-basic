@@ -115,7 +115,6 @@ export class AppComponent {
     const overview = $(go.Overview);
     return overview;
   }
-  public oModelData = { prop: 'val' };
   public observedDiagram = null;
 
   // currently selected node; for inspector
