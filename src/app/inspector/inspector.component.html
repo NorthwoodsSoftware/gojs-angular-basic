@@ -1,0 +1,9 @@
+<form *ngIf='selectedNode' (ngSubmit)='onCommitForm()'>
+  Key: {{ selectedNode.data.key }}
+  Color: <input name='color' [(ngModel)]='data.color' />
+  <button type="submit">Commit</button>
+</form>
+
+<div *ngIf='!selectedNode'>
+  Select a Node to use Inspector
+</div>

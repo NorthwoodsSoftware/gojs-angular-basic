@@ -1,0 +1,42 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700,700italic,900,900italic,300italic,300,100italic,100);
+
+body {
+   font-family: 'Roboto', sans-serif;
+}
+
+.myDiagramDiv {
+  background: whitesmoke;
+  width: 700px;
+  height: 300px;
+  border: 1px solid black;
+}
+
+.myPaletteDiv {
+  background: lightcyan;
+  border: 1px solid navy;
+  width: 200px;
+  height: 300px;
+}
+
+.myOverviewDiv {
+  width: 200px;
+  height: 150px;
+  background: whitesmoke;
+  border: 1px solid black;
+}
+
+.left {
+  float: left;
+  padding: 5px;
+  margin: 5px;
+}
+
+.box {
+  border: solid 1px black;
+  background: whitesmoke;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.clear {
+  clear: both;
+}

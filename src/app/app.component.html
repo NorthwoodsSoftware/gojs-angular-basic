@@ -1,0 +1,61 @@
+<h1>GoJS / Angular - Components Sample</h1>
+
+<div class="left">
+  Palette
+  <gojs-palette #myPalette [initPalette]='initPalette' [divClassName]='paletteDivClassName' [nodeDataArray]='paletteNodeData'
+    [linkDataArray]='paletteLinkData' [modelData]='paletteModelData' (modelChange)='paletteModelChange($event)'></gojs-palette>
+</div>
+
+
+
+<div class="left">
+  Diagram
+  <gojs-diagram #myDiagram [initDiagram]='initDiagram' [nodeDataArray]='diagramNodeData' [linkDataArray]='diagramLinkData'
+    [divClassName]='diagramDivClassName' [modelData]='diagramModelData' (modelChange)='diagramModelChange($event)'>
+  </gojs-diagram>
+</div>
+
+<div class="left">
+  Overview
+  <gojs-overview #myOverview [initOverview]='initOverview' [divClassName]='oDivClassName' [observedDiagram]='observedDiagram'></gojs-overview>
+</div>
+
+
+<div class="left">
+  <app-inspector [selectedNode]='selectedNode' (onFormChange)='handleInspectorChange($event)'></app-inspector>
+</div>
+
+
+<div class="clear left box">
+  <h3>Links in app data</h3>
+  <ul>
+    <li *ngFor="let ld of diagramLinkData">
+      Link Key: {{ld.key}}, To: {{ld.to}}, From: {{ ld.from }}
+    </li>
+  </ul>
+</div>
+
+<div class="left box">
+  <h3>Nodes in app data</h3>
+  <ul>
+    <li *ngFor="let nd of diagramNodeData">
+      Node Key: {{nd.key}}, Color: {{nd.color}}
+    </li>
+  </ul>
+</div>
+
+<div class="clear left">
+  <p>
+    This Angular-GoJS sample demonstrates how to use the Diagram, Palette, and Overview Angular-GoJS components, made
+    and
+    maintained by <a href="http://www.nwoods.com/">Northwoods Software</a>.
+  </p>
+  <p>
+    Notice how when a Node or Link is removed or added to the Diagram, the Nodes and Links the top-level App Component
+    has update accordingly.
+  </p>
+  <p>
+    For more information on how to use Angular with GoJS, see the <a href="#">GoJS with Angular intro page</a>.
+  </p>
+
+</div>
