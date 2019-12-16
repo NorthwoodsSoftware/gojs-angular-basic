@@ -106,20 +106,6 @@ export class AppComponent {
     this.paletteModelData = DataSyncService.syncModelData(changes, this.paletteModelData);
   };
 
-  public addNode = function() {
-    const nd = { key: 'Test', color: 'yellow' };
-    this.paletteNodeData.push(nd);
-  };
-
-  public addModelData = function() {
-    this.paletteModelData.someNewProp = 'someNewVal';
-  };
-
-  public changeSelectedNode = function() {
-    const node = this.myDiagramComponent.diagram.nodes.first();
-    this.selectedNode = node;
-  };
-
   constructor(private cdr: ChangeDetectorRef) { }
 
   // Overview Component testing
