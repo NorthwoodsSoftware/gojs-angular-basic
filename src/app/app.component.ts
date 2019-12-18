@@ -10,8 +10,8 @@ import { DataSyncService, DiagramComponent, PaletteComponent } from 'gojs-angula
 })
 export class AppComponent {
 
-  @ViewChild('myDiagram') public myDiagramComponent: DiagramComponent;
-  @ViewChild('myPalette') public myPaletteComponent: PaletteComponent;
+  @ViewChild('myDiagram', { static: true }) public myDiagramComponent: DiagramComponent;
+  @ViewChild('myPalette', { static: true }) public myPaletteComponent: PaletteComponent;
 
   // initialize diagram / templates
   public initDiagram(): go.Diagram {
@@ -115,6 +115,7 @@ export class AppComponent {
     const overview = $(go.Overview);
     return overview;
   }
+  public oModelData = { prop: 'val' };
   public observedDiagram = null;
 
   // currently selected node; for inspector
