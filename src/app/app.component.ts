@@ -21,22 +21,39 @@ export class AppComponent {
       'undoManager.isEnabled': true,
       model: $(go.GraphLinksModel,
         {
+          linkToPortIdProperty: 'toPort',
+          linkFromPortIdProperty: 'fromPort',
           linkKeyProperty: 'key' // IMPORTANT! must be defined for merges and data sync when using GraphLinksModel
         }
       )
     });
 
+    const makePort = function(id: string, spot: go.Spot) {
+      return $(go.Shape, 'Circle',
+        {
+          opacity: .5,
+          fill: 'gray', strokeWidth: 0, desiredSize: new go.Size(8, 8),
+          portId: id, alignment: spot,
+          fromLinkable: true, toLinkable: true
+        }
+      );
+    }
+
     // define the Node template
     dia.nodeTemplate =
-      $(go.Node, 'Auto',
-        {
-          toLinkable: true, fromLinkable: true
-        },
-        $(go.Shape, 'RoundedRectangle', { stroke: null },
-          new go.Binding('fill', 'color')
+      $(go.Node, 'Spot',
+        $(go.Panel, 'Auto',
+          $(go.Shape, 'RoundedRectangle', { stroke: null },
+            new go.Binding('fill', 'color')
+          ),
+          $(go.TextBlock, { margin: 8 },
+            new go.Binding('text', 'key'))
         ),
-        $(go.TextBlock, { margin: 8 },
-          new go.Binding('text', 'key'))
+        // Ports
+        makePort('t', go.Spot.TopCenter),
+        makePort('l', go.Spot.Left),
+        makePort('r', go.Spot.Right),
+        makePort('b', go.Spot.BottomCenter)
       );
 
     return dia;
@@ -49,11 +66,11 @@ export class AppComponent {
     { key: 'Delta', color: 'pink' }
   ];
   public diagramLinkData: Array<go.ObjectData> = [
-    { key: -1, from: 'Alpha', to: 'Beta' },
-    { key: -2, from: 'Alpha', to: 'Gamma' },
+    { key: -1, from: 'Alpha', to: 'Beta', fromPort: 'r', toPort: '1' },
+    { key: -2, from: 'Alpha', to: 'Gamma', fromPort: 'b', toPort: 't' },
     { key: -3, from: 'Beta', to: 'Beta' },
-    { key: -4, from: 'Gamma', to: 'Delta' },
-    { key: -5, from: 'Delta', to: 'Alpha' }
+    { key: -4, from: 'Gamma', to: 'Delta', fromPort: 'r', toPort: 'l' },
+    { key: -5, from: 'Delta', to: 'Alpha', fromPort: 't', toPort: 'r' }
   ];
   public diagramDivClassName: string = 'myDiagramDiv';
   public diagramModelData = { prop: 'value' };
