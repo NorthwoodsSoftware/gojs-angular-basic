@@ -28,6 +28,9 @@ export class AppComponent {
       )
     });
 
+    dia.commandHandler.archetypeGroupData = { key: 'Group', isGroup: true };
+
+
     const makePort = function(id: string, spot: go.Spot) {
       return $(go.Shape, 'Circle',
         {
@@ -42,6 +45,17 @@ export class AppComponent {
     // define the Node template
     dia.nodeTemplate =
       $(go.Node, 'Spot',
+        {
+          contextMenu:
+            $('ContextMenu',
+              $('ContextMenuButton',
+                $(go.TextBlock, 'Group'),
+                { click: function(e, obj) { e.diagram.commandHandler.groupSelection(); } },
+                new go.Binding('visible', '', function(o) {
+                  return o.diagram.selection.count > 1;
+                }).ofObject())
+            )
+        },
         $(go.Panel, 'Auto',
           $(go.Shape, 'RoundedRectangle', { stroke: null },
             new go.Binding('fill', 'color')
@@ -74,9 +88,15 @@ export class AppComponent {
   ];
   public diagramDivClassName: string = 'myDiagramDiv';
   public diagramModelData = { prop: 'value' };
+  public skipsDiagramUpdate = false;
 
   // When the diagram model changes, update app data to reflect those changes
   public diagramModelChange = function(changes: go.IncrementalData) {
+    // when setting state here, be sure to set skipsDiagramUpdate: true since GoJS already has this update
+    // (since this is a GoJS model changed listener event function)
+    // this way, we don't log an unneeded transaction in the Diagram's undoManager history
+    this.skipsDiagramUpdate = true;
+
     this.diagramNodeData = DataSyncService.syncNodeData(changes, this.diagramNodeData);
     this.diagramLinkData = DataSyncService.syncLinkData(changes, this.diagramLinkData);
     this.diagramModelData = DataSyncService.syncModelData(changes, this.diagramModelData);
@@ -171,6 +191,8 @@ export class AppComponent {
     }
 
     if (index >= 0) {
+      // here, we set skipsDiagramUpdate to false, since GoJS does not yet have this update
+      this.skipsDiagramUpdate = false;
       this.diagramNodeData[index] = { key: newNodeData.key, color: newNodeData.color };
     }
   }
