@@ -74,7 +74,7 @@ export class AppComponent {
   }
 
   public diagramNodeData: Array<go.ObjectData> = [
-    { key: 'Alpha', color: 'lightblue' },
+    { key: 'Alpha', color: 'lightblue', arr: [1, 2] },
     { key: 'Beta', color: 'orange' },
     { key: 'Gamma', color: 'lightgreen' },
     { key: 'Delta', color: 'pink' }
