@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import * as go from 'gojs';
 import { DataSyncService, DiagramComponent, PaletteComponent } from 'gojs-angular';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-root',
@@ -193,7 +194,7 @@ export class AppComponent {
     if (index >= 0) {
       // here, we set skipsDiagramUpdate to false, since GoJS does not yet have this update
       this.skipsDiagramUpdate = false;
-      this.diagramNodeData[index] = { key: newNodeData.key, color: newNodeData.color };
+      this.diagramNodeData[index] = _.cloneDeep(newNodeData);
     }
   }
 
