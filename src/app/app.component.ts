@@ -138,7 +138,13 @@ export class AppComponent {
   ];
   public paletteModelData = { prop: 'val' };
   public paletteDivClassName = 'myPaletteDiv';
+  public skipsPaletteUpdate = false;
   public paletteModelChange = function(changes: go.IncrementalData) {
+    // when setting state here, be sure to set skipsPaletteUpdate: true since GoJS already has this update
+    // (since this is a GoJS model changed listener event function)
+    // this way, we don't log an unneeded transaction in the Palette's undoManager history
+    this.skipsPaletteUpdate = true;
+
     this.paletteNodeData = DataSyncService.syncNodeData(changes, this.paletteNodeData);
     this.paletteLinkData = DataSyncService.syncLinkData(changes, this.paletteLinkData);
     this.paletteModelData = DataSyncService.syncModelData(changes, this.paletteModelData);
@@ -177,6 +183,10 @@ export class AppComponent {
         appComp.selectedNode = null;
       }
     });
+
+    this.skipsDiagramUpdate = false;
+    this.diagramNodeData = [];
+
   } // end ngAfterViewInit
 
 
