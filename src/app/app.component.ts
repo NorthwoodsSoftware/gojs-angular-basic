@@ -184,9 +184,6 @@ export class AppComponent {
       }
     });
 
-    this.skipsDiagramUpdate = false;
-    this.diagramNodeData = [];
-
   } // end ngAfterViewInit
 
 
