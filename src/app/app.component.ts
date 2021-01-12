@@ -7,7 +7,7 @@ import * as _ from 'lodash';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.ShadowDom
 })
 export class AppComponent {
 
@@ -30,7 +30,6 @@ export class AppComponent {
     });
 
     dia.commandHandler.archetypeGroupData = { key: 'Group', isGroup: true };
-
 
     const makePort = function(id: string, spot: go.Spot) {
       return $(go.Shape, 'Circle',
@@ -62,7 +61,7 @@ export class AppComponent {
             new go.Binding('fill', 'color')
           ),
           $(go.TextBlock, { margin: 8 },
-            new go.Binding('text', 'key'))
+            new go.Binding('text'))
         ),
         // Ports
         makePort('t', go.Spot.TopCenter),
@@ -75,13 +74,13 @@ export class AppComponent {
   }
 
   public diagramNodeData: Array<go.ObjectData> = [
-    { key: 'Alpha', color: 'lightblue', arr: [1, 2] },
-    { key: 'Beta', color: 'orange' },
-    { key: 'Gamma', color: 'lightgreen' },
-    { key: 'Delta', color: 'pink' }
+    { key: 'Alpha', text: "Node Alpha", color: 'lightblue' },
+    { key: 'Beta', text: "Node Beta", color: 'orange' },
+    { key: 'Gamma', text: "Node Gamma", color: 'lightgreen' },
+    { key: 'Delta', text: "Node Delta", color: 'pink' }
   ];
   public diagramLinkData: Array<go.ObjectData> = [
-    { key: -1, from: 'Alpha', to: 'Beta', fromPort: 'r', toPort: '1' },
+    { key: -1, from: 'Alpha', to: 'Beta', fromPort: 'r', toPort: 'l' },
     { key: -2, from: 'Alpha', to: 'Gamma', fromPort: 'b', toPort: 't' },
     { key: -3, from: 'Beta', to: 'Beta' },
     { key: -4, from: 'Gamma', to: 'Delta', fromPort: 'r', toPort: 'l' },
@@ -134,7 +133,7 @@ export class AppComponent {
     { key: 'PaletteNode2', color: 'blueviolet' }
   ];
   public paletteLinkData: Array<go.ObjectData> = [
-    { from: 'PaletteNode1', to: 'PaletteNode2' }
+    {  }
   ];
   public paletteModelData = { prop: 'val' };
   public paletteDivClassName = 'myPaletteDiv';

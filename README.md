@@ -7,19 +7,26 @@ Check out the [Intro page on using GoJS with Angular](https://gojs.net/latest/in
 
 It makes use of the [gojs-angular](https://github.com/NorthwoodsSoftware/gojs-angular) package to handle some boilerplate for setting up Diagram, Palette and Overview components.
 
-When running the sample, try moving around nodes, adding / deleting nodes, editing text in the inspector, relinking, undoing (Ctrl-Z), etc. within the diagram
-and you'll notice the changes are reflected in app-level data. You'll also notice that changes
+When running the sample, try moving around nodes, adding / deleting nodes, editing text in the inspector, relinking, undoing (Ctrl-Z), re-doing (Ctrl-Y), etc. within the diagram and you'll notice the changes are reflected in app-level data. You'll also notice that changes
 made in the inspector are reflected in the diagram.
 
 ## Installation
 
-Start by running npm install to install all necessary dependencies.
+Start by running npm install to install all necessary dependencies. 
+
+If you do not have Angular already globally installed, you may do so by running:
+
+### `npm i -g @angular/cli`
 
 ## Running the project
 
 In the project directory, run:
 
 ### `ng serve`
+
+Alternatively, if you do not have Angular installed globally, you may run:
+
+### `npm run start`
 
 Runs the app in the development mode.<br>
 Open [http://localhost:4200](http://localhost:4200) to view it in the browser.

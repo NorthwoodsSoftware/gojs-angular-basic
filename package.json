@@ -20,8 +20,8 @@
     "@angular/platform-browser-dynamic": "~11.0.0",
     "@angular/router": "~11.0.0",
     "core-js": "^3.6.5",
-    "gojs": "^2.1.27",
-    "gojs-angular": "^1.0.13",
+    "gojs": "^2.1.32",
+    "gojs-angular": "^1.0.15",
     "rxjs": "^6.6.3",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.2"
