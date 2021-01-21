@@ -29,7 +29,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.1100.2",
     "@angular-devkit/build-ng-packagr": "~0.1001.7",
-    "@angular/cli": "~11.0.0",
+    "@angular/cli": "^11.1.0",
     "@angular/compiler-cli": "^11.0.0",
     "@angular/language-service": "~11.0.0",
     "@types/jasmine": "~3.5.14",
@@ -38,7 +38,7 @@
     "codelyzer": "^6.0.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~6.0.0",
-    "karma": "~5.2.3",
+    "karma": "6.0.1",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~4.0.1",
