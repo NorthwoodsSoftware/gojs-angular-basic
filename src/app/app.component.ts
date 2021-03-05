@@ -118,7 +118,7 @@ export class AppComponent {
           new go.Binding('fill', 'color')
         ),
         $(go.TextBlock, { margin: 8 },
-          new go.Binding('text', 'key'))
+          new go.Binding('text'))
       );
 
     palette.model = $(go.GraphLinksModel,
@@ -129,8 +129,8 @@ export class AppComponent {
     return palette;
   }
   public paletteNodeData: Array<go.ObjectData> = [
-    { key: 'PaletteNode1', color: 'firebrick' },
-    { key: 'PaletteNode2', color: 'blueviolet' }
+    { key: 'PaletteNode1', text: "PaletteNode1", color: 'red' },
+    { key: 'PaletteNode2', text: "PaletteNode2", color: 'yellow' }
   ];
   public paletteLinkData: Array<go.ObjectData> = [
     {  }
@@ -201,7 +201,12 @@ export class AppComponent {
       // here, we set skipsDiagramUpdate to false, since GoJS does not yet have this update
       this.skipsDiagramUpdate = false;
       this.diagramNodeData[index] = _.cloneDeep(newNodeData);
+      // this.diagramNodeData[index] = _.cloneDeep(newNodeData);
     }
+
+    // var nd = this.observedDiagram.model.findNodeDataForKey(newNodeData.key);
+    // console.log(nd);
+
   }
 
 
