@@ -53,8 +53,7 @@ export class AppComponent {
       },
       { points: new go.List(/*go.Point*/).addAll([new go.Point(20, 20), new go.Point(60, 20), new go.Point(60, 40), new go.Point(60, 50)]) }
     ],
-    paletteModelData: { prop: 'val' },
-    skipsPaletteUpdate: false
+    paletteModelData: { prop: 'val' }
   };
   
   public diagramDivClassName: string = 'myDiagramDiv';
@@ -187,18 +186,6 @@ export class AppComponent {
 
     return palette;
   }
-  
-  // When the palette model changes, update app data to reflect those changes. Be sure to use immer's "produce" function to preserve immutability
-  public paletteModelChange = function(changes: go.IncrementalData) {  
-    this.state = produce(this.state, draft => {
-      // set skipsPaletteUpdate: true since GoJS already has this update
-      // this way, we don't log an unneeded transaction in the Palette's undoManager history
-      draft.skipsPaletteUpdate = true;
-      draft.paletteNodeData = DataSyncService.syncNodeData(changes, draft.paletteNodeData);
-      draft.paletteLinkData = DataSyncService.syncLinkData(changes, draft.paletteLinkData);
-      draft.paletteModelData = DataSyncService.syncModelData(changes, draft.paletteModelData);
-    });
-  };
 
   constructor(private cdr: ChangeDetectorRef) { }
 
