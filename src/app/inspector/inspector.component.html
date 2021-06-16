@@ -1,10 +1,13 @@
-<form *ngIf='selectedNode' (ngSubmit)='onCommitForm()'>
-  <p>Key: <input style="display: inline;" name='key' disabled [(ngModel)]='data.key' /></p>
-  <p>Color: <input style="display: inline;" name='color' [(ngModel)]='data.color' /></p>
-  <p>Text: <input style="display: inline;" name='text' [(ngModel)]='data.text' /></p>
-  <button type="submit">Commit</button>
-</form>
+<div *ngIf='nodeData' id="myInspectorDiv">
+  <table>
+    <tbody>
+      <tr *ngFor="let entry of nodeData | keyvalue">
+        <app-inspector-row *ngIf="entry.key !== 'id'" [id]="entry.key" [value]="entry.value" (onInputChangeEmitter)="onInputChange($event)"></app-inspector-row>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-<div *ngIf='!selectedNode'>
+<div *ngIf='!nodeData'>
   Select a Node to use Inspector
 </div>

@@ -6,11 +6,6 @@
   width: fit-content;
 }
 
-p {
-  padding: 0px;
-  margin: 0px;
-}
-
 form {
   background: lightgray;
   border: 1px solid black;

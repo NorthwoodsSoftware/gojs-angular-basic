@@ -5,12 +5,14 @@ import { GojsAngularModule } from 'gojs-angular';
 import { AppComponent } from './app.component';
 
 import { InspectorComponent } from './inspector/inspector.component';
+import { InspectorRowComponent } from './inspector/inspector-row.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    InspectorComponent
+    InspectorComponent,
+    InspectorRowComponent
   ],
   imports: [
     BrowserModule,
