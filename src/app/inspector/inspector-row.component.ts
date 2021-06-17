@@ -19,7 +19,7 @@ export class InspectorRowComponent {
 
   constructor() {}
 
-  private onInputChange(e: any) {
+  public onInputChange(e: any) {
     // when <input> is changed, emit an Object up, with what property changed, and to what new value
     this.onInputChangeEmitter.emit({prop: this.id, newVal: e.target.value});
   }
