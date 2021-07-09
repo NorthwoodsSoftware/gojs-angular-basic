@@ -46,13 +46,6 @@ export class AppComponent {
       { key: 'PaletteNode1', color: 'firebrick' },
       { key: 'PaletteNode2', color: 'blueviolet' }
     ],
-    paletteLinkData: [
-      {
-        points: new go.List(/*go.Point*/).addAll([new go.Point(0, 0), new go.Point(30, 0), new go.Point(30, 40), new go.Point(60, 40)]),
-        strokeWidth: 4, dash: [6, 3]
-      },
-      { points: new go.List(/*go.Point*/).addAll([new go.Point(20, 20), new go.Point(60, 20), new go.Point(60, 40), new go.Point(60, 50)]) }
-    ],
     paletteModelData: { prop: 'val' }
   };
   
@@ -153,37 +146,7 @@ export class AppComponent {
           new go.Binding('text', 'key'))
       );
 
-      palette.linkTemplate = $(go.Link,
-        { // because the GridLayout.alignment is Location and the nodes have locationSpot == Spot.Center,
-          // to line up the Link in the same manner we have to pretend the Link has the same location spot
-          locationSpot: go.Spot.Center,
-          selectionAdornmentTemplate:
-            $(go.Adornment, 'Link',
-              { locationSpot: go.Spot.Center },
-              $(go.Shape,
-                { isPanelMain: true, fill: null, stroke: 'deepskyblue', strokeWidth: 0 }, new go.Binding('strokeDashArray', 'dash')),
-              $(go.Shape,  // the arrowhead
-                { toArrow: 'Standard', stroke: null })
-            )
-        },
-        {
-          routing: go.Link.AvoidsNodes,
-          curve: go.Link.JumpOver,
-          corner: 5,
-          toShortLength: 4
-        },
-        new go.Binding('points'),
-        $(go.Shape,  // the link path shape
-          { isPanelMain: true }, new go.Binding('strokeDashArray', 'dash')),
-        $(go.Shape,  // the arrowhead
-          { toArrow: 'Standard', stroke: null })
-      )
-
-    palette.model = $(go.GraphLinksModel,
-      {
-        linkKeyProperty: 'key'  // IMPORTANT! must be defined for merges and data sync when using GraphLinksModel
-      });
-
+    palette.model = $(go.GraphLinksModel);
     return palette;
   }
 
