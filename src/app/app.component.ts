@@ -25,10 +25,10 @@ export class AppComponent {
   public state = {
     // Diagram state props
     diagramNodeData: [
-      { id: 'Alpha', text: "Alpha", color: 'lightblue' },
-      { id: 'Beta', text: "Beta", color: 'orange' },
-      { id: 'Gamma', text: "Gamma", color: 'lightgreen' },
-      { id: 'Delta', text: "Delta", color: 'pink' }
+      { id: 'Alpha', text: "Alpha", color: 'lightblue', loc: "0 0" },
+      { id: 'Beta', text: "Beta", color: 'orange', loc: "100 0" },
+      { id: 'Gamma', text: "Gamma", color: 'lightgreen', loc: "0 100" },
+      { id: 'Delta', text: "Delta", color: 'pink', loc: "100 100" }
     ],
     diagramLinkData: [
         { key: -1, from: 'Alpha', to: 'Beta', fromPort: 'r', toPort: '1' },
@@ -96,6 +96,7 @@ export class AppComponent {
                 }).ofObject())
             )
         },
+        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
         $(go.Panel, 'Auto',
           $(go.Shape, 'RoundedRectangle', { stroke: null },
             new go.Binding('fill', 'color', (c, panel) => {
@@ -126,6 +127,17 @@ export class AppComponent {
       draft.diagramNodeData = DataSyncService.syncNodeData(changes, draft.diagramNodeData, appComp.observedDiagram.model);
       draft.diagramLinkData = DataSyncService.syncLinkData(changes, draft.diagramLinkData, appComp.observedDiagram.model);
       draft.diagramModelData = DataSyncService.syncModelData(changes, draft.diagramModelData);
+      // If one of the modified nodes was the selected node used by the inspector, update the inspector selectedNodeData object
+      const modifiedNodeDatas = changes.modifiedNodeData;
+      if (modifiedNodeDatas && draft.selectedNodeData) {
+        for (let i = 0; i < modifiedNodeDatas.length; i++) {
+          const mn = modifiedNodeDatas[i];
+          const nodeKeyProperty = appComp.myDiagramComponent.diagram.model.nodeKeyProperty as string;
+          if (mn[nodeKeyProperty] === draft.selectedNodeData[nodeKeyProperty]) {
+            draft.selectedNodeData = mn;
+          }
+        }
+      }
     });
   };
 
