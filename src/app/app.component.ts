@@ -43,8 +43,8 @@ export class AppComponent {
 
     // Palette state props
     paletteNodeData: [
-      { key: 'PaletteNode1', color: 'firebrick' },
-      { key: 'PaletteNode2', color: 'blueviolet' }
+      { key: 'Epsilon', text: 'Epsilon', color: 'red' },
+      { key: 'Kappa', text: 'Kappa', color: 'purple' }
     ],
     paletteModelData: { prop: 'val' }
   };
@@ -119,6 +119,7 @@ export class AppComponent {
 
   // When the diagram model changes, update app data to reflect those changes. Be sure to use immer's "produce" function to preserve immutability
   public diagramModelChange = function(changes: go.IncrementalData) {
+    if (!changes) return;
     const appComp = this;
     this.state = produce(this.state, draft => {
       // set skipsDiagramUpdate: true since GoJS already has this update
