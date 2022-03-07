@@ -38,7 +38,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": false,
               "extractLicenses": true,
@@ -141,14 +140,6 @@
           "options": {
             "tsConfig": "projects/gojs-angular/tsconfig.lib.json",
             "project": "projects/gojs-angular/ng-package.json"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/gojs-angular/src/test.ts",
-            "tsConfig": "projects/gojs-angular/tsconfig.spec.json",
-            "karmaConfig": "projects/gojs-angular/karma.conf.js"
           }
         },
         "lint": {
