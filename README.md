@@ -1,6 +1,6 @@
 # gojs-angular-basic
 
-### By Northwoods Software for [GoJS 2.1](https://gojs.net)
+### By Northwoods Software for [GoJS](https://gojs.net)
 
 This project provides a basic example of using GoJS in an Angular app.
 Check out the [Intro page on using GoJS with Angular](https://gojs.net/latest/intro/angular.html) for more information.
