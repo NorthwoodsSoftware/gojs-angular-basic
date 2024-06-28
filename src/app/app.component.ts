@@ -1,6 +1,6 @@
 /**
  * Sample app showcasing gojs-angular components
- * For use with gojs-angular version 2.x
+ * For use with gojs-angular version 2.x, assuming immutable data
  */
 
 import { ChangeDetectorRef, Component, ViewChild, ViewEncapsulation } from '@angular/core';
@@ -25,13 +25,13 @@ export class AppComponent {
   public state = {
     // Diagram state props
     diagramNodeData: [
-      { id: 'Alpha', text: "Alpha", color: 'lightblue', loc: "0 0" },
-      { id: 'Beta', text: "Beta", color: 'orange', loc: "100 0" },
-      { id: 'Gamma', text: "Gamma", color: 'lightgreen', loc: "0 100" },
-      { id: 'Delta', text: "Delta", color: 'pink', loc: "100 100" }
+      { key: 'Alpha', text: "Alpha", color: 'lightblue', loc: "0 0" },
+      { key: 'Beta', text: "Beta", color: 'orange', loc: "150 0" },
+      { key: 'Gamma', text: "Gamma", color: 'lightgreen', loc: "0 100" },
+      { key: 'Delta', text: "Delta", color: 'pink', loc: "100 100" }
     ],
     diagramLinkData: [
-        { key: -1, from: 'Alpha', to: 'Beta', fromPort: 'r', toPort: '1' },
+        { key: -1, from: 'Alpha', to: 'Beta', fromPort: 'r', toPort: 'l' },
         { key: -2, from: 'Alpha', to: 'Gamma', fromPort: 'b', toPort: 't' },
         { key: -3, from: 'Beta', to: 'Beta' },
         { key: -4, from: 'Gamma', to: 'Delta', fromPort: 'r', toPort: 'l' },
@@ -43,78 +43,83 @@ export class AppComponent {
 
     // Palette state props
     paletteNodeData: [
-      { key: 'Epsilon', text: 'Epsilon', color: 'red' },
-      { key: 'Kappa', text: 'Kappa', color: 'purple' }
+      { key: 'Epsilon', text: 'Epsilon', color: 'moccasin' },
+      { key: 'Kappa', text: 'Kappa', color: 'lavender' }
     ],
     paletteModelData: { prop: 'val' }
   };
   
-  public diagramDivClassName: string = 'myDiagramDiv';
+  public diagramDivClassName = 'myDiagramDiv';
   public paletteDivClassName = 'myPaletteDiv';
 
   // initialize diagram / templates
   public initDiagram(): go.Diagram {
-
     const $ = go.GraphObject.make;
-    const dia = $(go.Diagram, {
-      'undoManager.isEnabled': true,
-      'clickCreatingTool.archetypeNodeData': { text: 'new node', color: 'lightblue' },
-      model: $(go.GraphLinksModel,
-        {
-          nodeKeyProperty: 'id',
-          linkToPortIdProperty: 'toPort',
-          linkFromPortIdProperty: 'fromPort',
-          linkKeyProperty: 'key' // IMPORTANT! must be defined for merges and data sync when using GraphLinksModel
-        }
-      )
-    });
 
-    dia.commandHandler.archetypeGroupData = { key: 'Group', isGroup: true };
+    const diagram =
+      $(go.Diagram, {
+        'commandHandler.archetypeGroupData': { key: 'Group', isGroup: true },
+        'clickCreatingTool.archetypeNodeData': { text: 'new node', color: 'lightblue' },
+        'undoManager.isEnabled': true,
+        model: $(go.GraphLinksModel,
+          {
+            linkToPortIdProperty: 'toPort',  // want to support multiple ports per node
+            linkFromPortIdProperty: 'fromPort',
+            linkKeyProperty: 'key' // IMPORTANT! must be defined for merges and data sync when using GraphLinksModel
+          }
+        )
+      });
 
     const makePort = function(id: string, spot: go.Spot) {
       return $(go.Shape, 'Circle',
         {
-          opacity: .5,
-          fill: 'gray', strokeWidth: 0, desiredSize: new go.Size(8, 8),
+          desiredSize: new go.Size(8, 8),
+          opacity: 0.5, fill: 'gray', strokeWidth: 0,
           portId: id, alignment: spot,
-          fromLinkable: true, toLinkable: true
+          fromSpot: spot, toSpot: spot,
+          fromLinkable: true, toLinkable: true, cursor: 'pointer'
         }
       );
     }
 
     // define the Node template
-    dia.nodeTemplate =
+    diagram.nodeTemplate =
       $(go.Node, 'Spot',
         {
           contextMenu:
             $('ContextMenu',
               $('ContextMenuButton',
                 $(go.TextBlock, 'Group'),
-                { click: function(e, obj) { e.diagram.commandHandler.groupSelection(); } },
-                new go.Binding('visible', '', function(o) {
-                  return o.diagram.selection.count > 1;
-                }).ofObject())
+                {
+                  click: (e, obj) => e.diagram.commandHandler.groupSelection()
+                })
             )
         },
         new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
         $(go.Panel, 'Auto',
-          $(go.Shape, 'RoundedRectangle', { stroke: null },
-            new go.Binding('fill', 'color', (c, panel) => {
-             
-              return c;
-            })
-          ),
+          $(go.Shape, 'RoundedRectangle', { strokeWidth: 0.5 },
+            new go.Binding('fill', 'color', (c, panel) => c)),
           $(go.TextBlock, { margin: 8, editable: true },
             new go.Binding('text').makeTwoWay())
         ),
         // Ports
-        makePort('t', go.Spot.TopCenter),
+        makePort('t', go.Spot.Top),
         makePort('l', go.Spot.Left),
         makePort('r', go.Spot.Right),
-        makePort('b', go.Spot.BottomCenter)
+        makePort('b', go.Spot.Bottom)
       );
 
-    return dia;
+    diagram.linkTemplate =
+      $(go.Link,
+        {
+          curve: go.Link.Bezier,
+          fromEndSegmentLength: 30, toEndSegmentLength: 30
+        },
+        $(go.Shape, { strokeWidth: 1.5 }),
+        $(go.Shape, { toArrow: "Standard" })
+      )
+  
+    return diagram;
   }
 
   // When the diagram model changes, update app data to reflect those changes. Be sure to use immer's "produce" function to preserve immutability
@@ -145,21 +150,15 @@ export class AppComponent {
   public initPalette(): go.Palette {
     const $ = go.GraphObject.make;
     const palette = $(go.Palette);
-
     // define the Node template
     palette.nodeTemplate =
       $(go.Node, 'Auto',
-        $(go.Shape, 'RoundedRectangle',
-          {
-            stroke: null
-          },
+        $(go.Shape, 'RoundedRectangle', { strokeWidth: 0.5 },
           new go.Binding('fill', 'color')
         ),
         $(go.TextBlock, { margin: 8 },
-          new go.Binding('text', 'key'))
+          new go.Binding('text'))
       );
-
-    palette.model = $(go.GraphLinksModel);
     return palette;
   }
 
@@ -169,8 +168,7 @@ export class AppComponent {
   public oDivClassName = 'myOverviewDiv';
   public initOverview(): go.Overview {
     const $ = go.GraphObject.make;
-    const overview = $(go.Overview);
-    return overview;
+    return $(go.Overview);
   }
   public observedDiagram = null;
 
@@ -191,7 +189,7 @@ export class AppComponent {
       const node = e.diagram.selection.first();
       appComp.state = produce(appComp.state, draft => {
         if (node instanceof go.Node) {
-          var idx = draft.diagramNodeData.findIndex(nd => nd.id == node.data.id);
+          var idx = draft.diagramNodeData.findIndex(nd => nd.key == node.data.key);
           var nd = draft.diagramNodeData[idx];
           draft.selectedNodeData = nd;
         } else {
@@ -214,15 +212,12 @@ export class AppComponent {
     this.state = produce(this.state, draft => {
       var data = draft.selectedNodeData;
       data[path] = value;
-      const key = data.id;
-      const idx = draft.diagramNodeData.findIndex(nd => nd.id == key);
+      const key = data.key;
+      const idx = draft.diagramNodeData.findIndex(nd => nd.key == key);
       if (idx >= 0) {
         draft.diagramNodeData[idx] = data;
         draft.skipsDiagramUpdate = false; // we need to sync GoJS data with this new app state, so do not skips Diagram update
       }
     });
   }
-
-
 }
-

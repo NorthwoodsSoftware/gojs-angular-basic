@@ -12,6 +12,9 @@ made in the inspector are reflected in the diagram.
 
 ## Installation
 
+This sample works with GoJS v2.3.
+If you want to use GoJS v3.0, be sure to use at least version 3.0.6.
+
 Start by running npm install to install all necessary dependencies. 
 
 If you do not have Angular already globally installed, you may do so by running:
