@@ -6,7 +6,7 @@
 import { ChangeDetectorRef, Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import * as go from 'gojs';
 import { DataSyncService, DiagramComponent, PaletteComponent } from 'gojs-angular';
-import produce from "immer";
+import { produce } from "immer";
 
 @Component({
   selector: 'app-root',

@@ -70,18 +70,6 @@
           "options": {
             "browserTarget": "angular-tutorial:build"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     },
@@ -100,15 +88,6 @@
             "production": {
               "devServerTarget": "angular-tutorial:serve:production"
             }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
@@ -132,18 +111,6 @@
             "main": "projects/gojs-angular/src/test.ts",
             "tsConfig": "projects/gojs-angular/tsconfig.spec.json",
             "karmaConfig": "projects/gojs-angular/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/gojs-angular/tsconfig.lib.json",
-              "projects/gojs-angular/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
