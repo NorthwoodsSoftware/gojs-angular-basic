@@ -1,6 +1,8 @@
 /**
  * Sample app showcasing gojs-angular components
  * For use with gojs-angular version 2.x, assuming immutable data
+ * This now uses GoJS version 3.0, using some of its new features,
+ * but your app could use GoJS version 2.3.17, if you don't yet want to upgrade to v3.
  */
 
 import { ChangeDetectorRef, Component, ViewChild, ViewEncapsulation } from '@angular/core';
@@ -54,71 +56,69 @@ export class AppComponent {
 
   // initialize diagram / templates
   public initDiagram(): go.Diagram {
-    const $ = go.GraphObject.make;
-
     const diagram =
-      $(go.Diagram, {
+      new go.Diagram({
         'commandHandler.archetypeGroupData': { key: 'Group', isGroup: true },
         'clickCreatingTool.archetypeNodeData': { text: 'new node', color: 'lightblue' },
         'undoManager.isEnabled': true,
-        model: $(go.GraphLinksModel,
-          {
+        model: new go.GraphLinksModel({
             linkToPortIdProperty: 'toPort',  // want to support multiple ports per node
             linkFromPortIdProperty: 'fromPort',
             linkKeyProperty: 'key' // IMPORTANT! must be defined for merges and data sync when using GraphLinksModel
-          }
-        )
+          })
       });
 
-    const makePort = function(id: string, spot: go.Spot) {
-      return $(go.Shape, 'Circle',
-        {
+    // a helper function for defining multiple ports in node templates
+    function makePort(id: string, spot: go.Spot) {
+      return new go.Shape('Circle', {
           desiredSize: new go.Size(8, 8),
           opacity: 0.5, fill: 'gray', strokeWidth: 0,
           portId: id, alignment: spot,
           fromSpot: spot, toSpot: spot,
           fromLinkable: true, toLinkable: true, cursor: 'pointer'
-        }
-      );
+        });
     }
 
     // define the Node template
     diagram.nodeTemplate =
-      $(go.Node, 'Spot',
-        {
+      new go.Node('Spot', {
           contextMenu:
-            $('ContextMenu',
-              $('ContextMenuButton',
-                $(go.TextBlock, 'Group'),
-                {
-                  click: (e, obj) => e.diagram.commandHandler.groupSelection()
-                })
-            )
-        },
-        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
-        $(go.Panel, 'Auto',
-          $(go.Shape, 'RoundedRectangle', { strokeWidth: 0.5 },
-            new go.Binding('fill', 'color', (c, panel) => c)),
-          $(go.TextBlock, { margin: 8, editable: true },
-            new go.Binding('text').makeTwoWay())
-        ),
-        // Ports
-        makePort('t', go.Spot.Top),
-        makePort('l', go.Spot.Left),
-        makePort('r', go.Spot.Right),
-        makePort('b', go.Spot.Bottom)
-      );
+            (go.GraphObject.build('ContextMenu') as go.Adornment)
+              .add(
+                (go.GraphObject.build('ContextMenuButton') as go.Panel)
+                  .add(
+                    new go.TextBlock('Group', {
+                      click: (e, obj) => e.diagram.commandHandler.groupSelection()
+                    })
+                  )
+              )
+        })
+        .bindTwoWay("location", "loc", go.Point.parse, go.Point.stringifyFixed(1))
+        .add(
+          new go.Panel('Auto')
+            .add(
+              new go.Shape('RoundedRectangle', { strokeWidth: 0.5 })
+                .bind('fill', 'color'),
+              new go.TextBlock({ margin: 8, editable: true })
+                .bindTwoWay('text')
+            ),
+          // Ports
+          makePort('t', go.Spot.Top),
+          makePort('l', go.Spot.Left),
+          makePort('r', go.Spot.Right),
+          makePort('b', go.Spot.Bottom)
+        );
 
     diagram.linkTemplate =
-      $(go.Link,
-        {
-          curve: go.Link.Bezier,
+      new go.Link({
+          curve: go.Curve.Bezier,
           fromEndSegmentLength: 30, toEndSegmentLength: 30
-        },
-        $(go.Shape, { strokeWidth: 1.5 }),
-        $(go.Shape, { toArrow: "Standard" })
-      )
-  
+        })
+        .add(
+          new go.Shape({ strokeWidth: 1.5 }),
+          new go.Shape({ toArrow: "Standard" })
+        );
+
     return diagram;
   }
 
@@ -148,17 +148,16 @@ export class AppComponent {
   };
 
   public initPalette(): go.Palette {
-    const $ = go.GraphObject.make;
-    const palette = $(go.Palette);
-    // define the Node template
+    const palette = new go.Palette();
+    // define a simpler Node template than the one used by the main Diagram
     palette.nodeTemplate =
-      $(go.Node, 'Auto',
-        $(go.Shape, 'RoundedRectangle', { strokeWidth: 0.5 },
-          new go.Binding('fill', 'color')
-        ),
-        $(go.TextBlock, { margin: 8 },
-          new go.Binding('text'))
-      );
+      new go.Node('Auto')
+        .add(
+          new go.Shape('RoundedRectangle', { strokeWidth: 0.5 })
+            .bind('fill', 'color'),
+          new go.TextBlock({ margin: 8 })
+            .bind('text')
+        );
     return palette;
   }
 
@@ -167,8 +166,7 @@ export class AppComponent {
   // Overview Component testing
   public oDivClassName = 'myOverviewDiv';
   public initOverview(): go.Overview {
-    const $ = go.GraphObject.make;
-    return $(go.Overview);
+    return new go.Overview();
   }
   public observedDiagram = null;
 
