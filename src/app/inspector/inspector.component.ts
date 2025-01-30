@@ -1,24 +1,23 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import * as go from 'gojs';
-
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-inspector',
+  imports: [CommonModule],
   templateUrl: './inspector.component.html',
-  styleUrls: ['./inspector.component.css']
+  styleUrls: ['./inspector.component.css'],
 })
 export class InspectorComponent {
-
   @Input()
   public nodeData: go.ObjectData;
 
   @Output()
   public onInspectorChange: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() { }
+  constructor() {}
 
   public onInputChange(propAndValObj: any) {
     this.onInspectorChange.emit(propAndValObj);
   }
-
 }

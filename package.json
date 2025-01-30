@@ -1,41 +1,31 @@
 {
   "name": "gojs-angular-basic",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "NG_BUILD_PARALLEL_TS=0 ng serve",
     "build": "ng build",
-    "test": "ng test",
-    "e2e": "ng e2e"
+    "watch": "ng build --watch --configuration development"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^18.0.5",
-    "@angular/common": "^18.0.5",
-    "@angular/compiler": "^18.0.5",
-    "@angular/core": "^18.0.5",
-    "@angular/forms": "^18.0.5",
-    "@angular/platform-browser": "^18.0.5",
-    "@angular/platform-browser-dynamic": "^18.0.5",
-    "@angular/router": "^18.0.5",
-    "core-js": "^3.14.0",
-    "gojs": "^3.0.8",
-    "gojs-angular": "^2.0.8",
-    "immer": "^10.1.1",
-    "postcss": "^8.4.31",
-    "rxjs": "^7.5.6",
-    "zone.js": "~0.14.8"
+    "@angular/common": "^19.0.0",
+    "@angular/compiler": "^19.0.0",
+    "@angular/core": "^19.0.0",
+    "@angular/forms": "^19.0.0",
+    "@angular/platform-browser": "^19.0.0",
+    "@angular/router": "^19.0.0",
+    "gojs": "^3.0.18",
+    "gojs-angular": "^2.1.1",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^18.0.6",
-    "@angular/cli": "^18.0.6",
-    "@angular/compiler-cli": "^18.0.5",
-    "@angular/language-service": "^18.0.5",
-    "@types/jasmine": "~3.7.7",
-    "@types/jasminewd2": "^2.0.9",
-    "@types/node": "~15.12.2",
-    "codelyzer": "^6.0.2",
-    "ts-node": "~9.0.0",
-    "typescript": "~5.4.5"
+    "@angular-devkit/build-angular": "^19.1.5",
+    "@angular/build": "^19.0.0",
+    "@angular/cli": "^19.0.0",
+    "@angular/compiler-cli": "^19.0.0",
+    "typescript": "~5.6.3"
   }
 }
