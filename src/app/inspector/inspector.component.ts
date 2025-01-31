@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import * as go from 'gojs';
 import { CommonModule } from '@angular/common';
+import { InspectorRowComponent } from './inspector-row.component';
 
 @Component({
   selector: 'app-inspector',
-  imports: [CommonModule],
+  imports: [CommonModule, InspectorRowComponent],
   templateUrl: './inspector.component.html',
   styleUrls: ['./inspector.component.css'],
 })

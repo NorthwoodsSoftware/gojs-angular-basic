@@ -149,10 +149,10 @@ export class AppComponent {
       );
       draft.diagramModelData = DataSyncService.syncModelData(changes, draft.diagramModelData);
       // If one of the modified nodes was the selected node used by the inspector, update the inspector selectedNodeData object
-      const modifiedNodeDatas = changes.modifiedNodeData;
-      if (modifiedNodeDatas && draft.selectedNodeData) {
-        for (let i = 0; i < modifiedNodeDatas.length; i++) {
-          const mn = modifiedNodeDatas[i];
+      const modifiedNodeData = changes.modifiedNodeData;
+      if (modifiedNodeData && draft.selectedNodeData) {
+        for (let i = 0; i < modifiedNodeData.length; i++) {
+          const mn = modifiedNodeData[i];
           const nodeKeyProperty = appComp.myDiagramComponent.diagram.model
             .nodeKeyProperty as string;
           if (mn[nodeKeyProperty] === draft.selectedNodeData[nodeKeyProperty]) {
