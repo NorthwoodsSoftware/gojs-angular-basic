@@ -1,18 +1,18 @@
-import { Input } from "@angular/core";
+import { Input } from '@angular/core';
 import { Component, EventEmitter, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-inspector-row',
   templateUrl: './inspector-row.component.html',
-  styleUrls: ['./inspector-row.component.css']
+  imports: [FormsModule],
 })
 export class InspectorRowComponent {
+  @Input()
+  public id: string;
 
   @Input()
-  public id: string
-
-  @Input()
-  public value: string
+  public value: string;
 
   @Output()
   public onInputChangeEmitter: EventEmitter<any> = new EventEmitter<any>();
@@ -21,7 +21,6 @@ export class InspectorRowComponent {
 
   public onInputChange(e: any) {
     // when <input> is changed, emit an Object up, with what property changed, and to what new value
-    this.onInputChangeEmitter.emit({prop: this.id, newVal: e.target.value});
+    this.onInputChangeEmitter.emit({ prop: this.id, newVal: e.target.value });
   }
-
 }
